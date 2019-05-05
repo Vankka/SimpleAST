@@ -19,8 +19,8 @@ public class StyleNode<RC, T> extends Node<RC> {
         return styles;
     }
 
-    public class Companion {
-        public <RC> StyleNode<RC, TextStyle> createWithText(String content, List<TextStyle> styles) {
+    public static class Companion {
+        public static <RC> StyleNode<RC, TextStyle> createWithText(String content, List<TextStyle> styles) {
             StyleNode<RC, TextStyle> styleNode = new StyleNode<>(styles);
             styleNode.addChild(new TextNode<>(content));
             return styleNode;
