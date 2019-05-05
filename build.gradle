@@ -12,6 +12,13 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+
+    maven {
+        url System.env.NEXUS_URL + "/content/repositories/" + System.env.NEXUS_REPO
+        credentials {
+            username System.env.NEXUS_USERNAME
+            password System.env.NEXUS_PASSWORD
+        }
 }
 
 dependencies {
