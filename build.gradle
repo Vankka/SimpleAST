@@ -21,11 +21,11 @@ dependencies {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "${nexusUrl}/content/repositories/${nexusRepo}") {
+            repository(url: nexusUrl + "/content/repositories/" + nexusRepo) {
                 authentication(userName: nexusUsername, password: nexusPassword)
             }
 
-            snapshotRepository(url: "${nexusUrl}/content/repositories/${nexusSnapshotRepo}") {
+            snapshotRepository(url: nexusUrl + "/content/repositories/" + nexusSnapshotRepo) {
                 authentication(userName: nexusUsername, password: nexusPassword)
             }
         }
