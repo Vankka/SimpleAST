@@ -21,12 +21,12 @@ dependencies {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: nexusUrl + "/content/repositories/" + nexusRepo) {
-                authentication(userName: nexusUsername, password: nexusPassword)
+            repository(url: System.env.NEXUS_URL + "/content/repositories/" + System.env.NEXUS_REPO) {
+                authentication(userName: System.env.NEXUS_USERNAME, password: System.env.NEXUS_PASSWORD)
             }
 
-            snapshotRepository(url: nexusUrl + "/content/repositories/" + nexusSnapshotRepo) {
-                authentication(userName: nexusUsername, password: nexusPassword)
+            snapshotRepository(url: System.env.NEXUS_URL + "/content/repositories/" + System.env.NEXUS_SNAPSHOT_REPO) {
+                authentication(userName: System.env.NEXUS_USERNAME, password: System.env.NEXUS_PASSWORD)
             }
         }
     }
