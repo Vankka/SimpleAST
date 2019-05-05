@@ -19,6 +19,7 @@ repositories {
             username System.env.NEXUS_USERNAME
             password System.env.NEXUS_PASSWORD
         }
+    }
 }
 
 dependencies {
