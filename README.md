@@ -5,6 +5,18 @@ Fork of https://github.com/discordapp/SimpleAST
  * Removed all rendering
  * Remove everything Android related
    * Removed the `app` module (and made `simpleast-core` the root module)
+   
+[![Build Status](https://travis-ci.org/Vankka/SimpleAST.svg?branch=master)](https://travis-ci.org/Vankka/SimpleAST)
+
+```
+repositories {
+    maven { url 'https://nexus.scarsz.me/content/groups/public/' }
+}
+
+dependencies {
+    implementation 'me.vankka:SimpleAST:1.0'
+}
+```
 
 # SimpleAST
 
@@ -21,6 +33,18 @@ For example:
 # Using SimpleAST in your application
 If you are building with Gradle, simply add the following line to the dependencies section of your build.gradle file:
 
+This fork
+```
+repositories {
+    maven { url 'https://nexus.scarsz.me/content/groups/public/' }
+}
+
+dependencies {
+    implementation 'me.vankka:SimpleAST:1.0'
+}
+```
+
+discordapp's repo
 ```
 implementation 'com.discord:simpleast:1.1.1'
 ```
