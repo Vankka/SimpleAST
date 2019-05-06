@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'me.vankka:SimpleAST:master-SNAPSHOT'
+    implementation 'com.github.Vankka:SimpleAST:master-SNAPSHOT'
 }
 ```
 
@@ -40,7 +40,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'me.vankka:SimpleAST:master-SNAPSHOT'
+    implementation 'com.github.Vankka:SimpleAST:master-SNAPSHOT'
 }
 ```
 
