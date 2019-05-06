@@ -17,12 +17,3 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
-
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: System.env.mavenRepo) {
-            authentication(userName: System.env.mavenRepoUsername, password: System.env.mavenRepoPassword)
-        }
-    }
-    dependsOn check
-}

@@ -10,11 +10,11 @@ Fork of https://github.com/discordapp/SimpleAST
 
 ```
 repositories {
-    maven { url 'https://nexus.scarsz.me/content/groups/public/' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    implementation 'me.vankka:SimpleAST:1.0'
+    implementation 'me.vankka:SimpleAST:master-SNAPSHOT'
 }
 ```
 
@@ -36,11 +36,11 @@ If you are building with Gradle, simply add the following line to the dependenci
 This fork
 ```
 repositories {
-    maven { url 'https://nexus.scarsz.me/content/groups/public/' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    implementation 'me.vankka:SimpleAST:1.0'
+    implementation 'me.vankka:SimpleAST:master-SNAPSHOT'
 }
 ```
 
