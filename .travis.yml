@@ -3,6 +3,7 @@ jdk:
   - oraclejdk8
 before_install: chmod a+x gradlew
 deploy:
+  allow_failures: true
   skip_cleanup: true
   provider: script
   script: "./gradlew uploadArchives"
