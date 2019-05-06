@@ -19,15 +19,11 @@ dependencies {
 }
 
 uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: System.env.NEXUS_URL + "/content/repositories/" + System.env.NEXUS_REPO) {
-                authentication(userName: System.env.NEXUS_USERNAME, password: System.env.NEXUS_PASSWORD)
-            }
-
-            snapshotRepository(url: System.env.NEXUS_URL + "/content/repositories/" + System.env.NEXUS_SNAPSHOT_REPO) {
-                authentication(userName: System.env.NEXUS_USERNAME, password: System.env.NEXUS_PASSWORD)
-            }
+    repositories.mavenDeployer {
+        configuration = project.configurations.deployerJars
+        repository(url: System.env.mavenRepo) {
+            authentication(userName: System.env.mavenRepoUsername, password: System.env.mavenRepoPassword)
         }
     }
+    dependsOn check
 }
