@@ -3,12 +3,12 @@ jdk:
   - oraclejdk8
 before_install: chmod a+x gradlew
 deploy:
-  allow_failures: true
   skip_cleanup: true
   provider: script
   script: "./gradlew uploadArchives"
   on:
     branch: master
+
 env:
   matrix:
     secure: "UewjxpGxld+9/PpXGJoZZ4NOuqMPrknJmmTiPMr35JQYbcWs2hTQzEKLE+p8jkPnUpLnV8AwRWGyI8unrYXa1yxuNMduFvX15w8KeA+jokHIQ6EcKI8g1jhZbUt0Gk5Q3XT0GOwGspqGL8ZPtfZgKelvObLJX75CAQNi0HqWCcegSRPQGbJtGHzZR6x0xbUy5bMuEBsjv0A9JPof0GhC+4aiERC2DRGmwoXkRPf7EFdg6rtX3T4/qKeQzJuJMByh9padGUkyTOJlc8yLzM/xodgv7wsBpqdxrwRGff3hgppDJKQI5mg7Dwi6NMYdaVy/j8hLn/q1Tzov9RXrHopZ+uUjM46Cgg3phdI/bKdJq4e0jouaON0t2FUZqOZVXq4EKyVG2rvfF+n0O8j1yvbgJGh8m56aEtGATmdCr7xx70VEuq7IiVBOeuJWYCpyNuDcTRvwLL0RWXTBBRpC4MMCZoxH1Z53ea6TWK3neZ0Lj5C1FN7yIATfdbkXM2EWKygcgv1FM1F5ALPcw3shQwr8lxLeTyN31a26lFKw/r7KyDSM+79kfcJWhFcqbZ+6E0VzDzPnf2G1SaNiIrm51uOHTnYYI/KS6fgYQWsUIsqVMB+Dud3GQ8u3X3ryANB5su+pfG/rSFSSw0JXtUvIxTN6da1yz+eSmsQgI+PAiVIjI2Y="
