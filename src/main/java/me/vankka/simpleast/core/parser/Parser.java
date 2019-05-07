@@ -32,12 +32,12 @@ public class Parser<R, T extends Node<R>> {
     }
 
     /**
-     * Transforms the [source] to a AST of [Node]s using the global Parser.rules.
+     * Transforms the [source] to a AST of [Node]s using the global Parser.rules and without debug logging.
      *
      * @throws ParseException for certain specific error flows.
      */
     public List<T> parse(CharSequence source) {
-        return parse(source, null);
+        return parse(source, null, false);
     }
 
     /**
@@ -48,7 +48,7 @@ public class Parser<R, T extends Node<R>> {
      *
      * @throws ParseException for certain specific error flows.
      */
-    public List<T> parse(CharSequence source, List<Rule<R, T>> rules) {
+    public List<T> parse(CharSequence source, List<Rule<R, T>> rules, boolean debugLog) {
         if (rules == null)
             rules = this.rules;
 
@@ -75,7 +75,9 @@ public class Parser<R, T extends Node<R>> {
             for (Rule<R, T> rule : rules) {
                 Matcher matcher = rule.match(inspectionSource, lastCapture);
                 if (matcher != null) {
-                    System.out.println("MATCH: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source);
+                    if (debugLog) {
+                        System.out.println("MATCH: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source);
+                    }
                     int matcherSourceEnd = matcher.end() + offset;
                     foundRule = true;
 
@@ -112,7 +114,7 @@ public class Parser<R, T extends Node<R>> {
                     }
 
                     break;
-                } else {
+                } else if (debugLog) {
                     System.out.println("MISS: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source);
                 }
             }
