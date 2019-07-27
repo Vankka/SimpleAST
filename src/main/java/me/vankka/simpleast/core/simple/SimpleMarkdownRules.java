@@ -39,53 +39,53 @@ public class SimpleMarkdownRules {
                     ")\\*(?!\\*)"
     );
 
-    private static <R> Rule<R, Node<R>> createBoldRule() {
+    private static <R, S> Rule<R, Node<R>, S> createBoldRule() {
         return createSimpleStyleRule(PATTERN_BOLD, TextStyle.BOLD);
     }
 
-    private static <R> Rule<R, Node<R>> createUnderlineRule() {
+    private static <R, S> Rule<R, Node<R>, S> createUnderlineRule() {
         return createSimpleStyleRule(PATTERN_UNDERLINE, TextStyle.UNDERLINE);
     }
 
-    private static <R> Rule<R, Node<R>> createStrikethruRule() {
+    private static <R, S> Rule<R, Node<R>, S> createStrikethruRule() {
         return createSimpleStyleRule(PATTERN_STRIKETHRU, TextStyle.STRIKETHROUGH);
     }
 
-    private static <R> Rule<R, Node<R>> createTextRule() {
-        return new Rule<R, Node<R>>(PATTERN_TEXT) {
+    private static <R, S> Rule<R, Node<R>, S> createTextRule() {
+        return new Rule<R, Node<R>, S>(PATTERN_TEXT) {
 
             @Override
-            public ParseSpec<R, Node<R>> parse(Matcher matcher, Parser<R, Node<R>> parser) {
-                return ParseSpec.createTerminal(new TextNode<>(matcher.group()));
+            public ParseSpec<R, Node<R>, S> parse(Matcher matcher, Parser<R, Node<R>, S> parser, S state) {
+                return ParseSpec.createTerminal(new TextNode<>(matcher.group()), state);
             }
         };
     }
 
-    private static <R> Rule<R, Node<R>> createNewlineRule() {
-        return new Rule<R, Node<R>>(PATTERN_NEWLINE) {
+    private static <R, S> Rule<R, Node<R>, S> createNewlineRule() {
+        return new Rule<R, Node<R>, S>(PATTERN_NEWLINE) {
 
             @Override
-            public ParseSpec<R, Node<R>> parse(Matcher matcher, Parser<R, Node<R>> parser) {
-                return ParseSpec.createTerminal(new TextNode<>("\n"));
+            public ParseSpec<R, Node<R>, S> parse(Matcher matcher, Parser<R, Node<R>, S> parser, S state) {
+                return ParseSpec.createTerminal(new TextNode<>("\n"), state);
             }
         };
     }
 
-    private static <R> Rule<R, Node<R>> createEscapeRule() {
-        return new Rule<R, Node<R>>(PATTERN_ESCAPE) {
+    private static <R, S> Rule<R, Node<R>, S> createEscapeRule() {
+        return new Rule<R, Node<R>, S>(PATTERN_ESCAPE) {
 
             @Override
-            public ParseSpec<R, Node<R>> parse(Matcher matcher, Parser<R, Node<R>> parser) {
-                return ParseSpec.createTerminal(new TextNode<>(matcher.group(1)));
+            public ParseSpec<R, Node<R>, S> parse(Matcher matcher, Parser<R, Node<R>, S> parser, S state) {
+                return ParseSpec.createTerminal(new TextNode<>(matcher.group(1)), state);
             }
         };
     }
 
-    private static <R> Rule<R, Node<R>> createItalicsRule() {
-        return new Rule<R, Node<R>>(PATTERN_ITALICS) {
+    private static <R, S> Rule<R, Node<R>, S> createItalicsRule() {
+        return new Rule<R, Node<R>, S>(PATTERN_ITALICS) {
 
             @Override
-            public ParseSpec<R, Node<R>> parse(Matcher matcher, Parser<R, Node<R>> parser) {
+            public ParseSpec<R, Node<R>, S> parse(Matcher matcher, Parser<R, Node<R>, S> parser, S state) {
                 int startIndex;
                 int endIndex;
                 String asteriskMatch = matcher.group(2);
@@ -98,23 +98,23 @@ public class SimpleMarkdownRules {
                 }
 
                 List<TextStyle> styles = new ArrayList<>(Collections.singletonList(TextStyle.ITALICS));
-                return ParseSpec.createNonterminal(new StyleNode<>(styles), startIndex, endIndex);
+                return ParseSpec.createNonterminal(new StyleNode<>(styles), state, startIndex, endIndex);
             }
         };
     }
 
-    private static <R> Rule<R, Node<R>> createSimpleStyleRule(Pattern pattern, TextStyle textStyle) {
-        return new Rule<R, Node<R>>(pattern) {
+    private static <R, S> Rule<R, Node<R>, S> createSimpleStyleRule(Pattern pattern, TextStyle textStyle) {
+        return new Rule<R, Node<R>, S>(pattern) {
 
             @Override
-            public ParseSpec<R, Node<R>> parse(Matcher matcher, Parser<R, Node<R>> parser) {
-                return ParseSpec.createNonterminal(new StyleNode<>(new ArrayList<>(Collections.singletonList(textStyle))), matcher.start(1), matcher.end(1));
+            public ParseSpec<R, Node<R>, S> parse(Matcher matcher, Parser<R, Node<R>, S> parser, S state) {
+                return ParseSpec.createNonterminal(new StyleNode<>(new ArrayList<>(Collections.singletonList(textStyle))), state, matcher.start(1), matcher.end(1));
             }
         };
     }
 
-    public static <R> List<Rule<R, Node<R>>> createSimpleMarkdownRules(boolean includeTextRule) {
-        List<Rule<R, Node<R>>> rules = new ArrayList<>();
+    public static <R, S> List<Rule<R, Node<R>, S>> createSimpleMarkdownRules(boolean includeTextRule) {
+        List<Rule<R, Node<R>, S>> rules = new ArrayList<>();
         rules.add(createEscapeRule());
         rules.add(createNewlineRule());
         rules.add(createBoldRule());
