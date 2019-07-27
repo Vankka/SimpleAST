@@ -36,11 +36,11 @@ public class Parser<R, T extends Node<R>, S> {
     }
 
     public List<T> parse(CharSequence source, S initialSource) {
-        return parse(source, initialSource, rules, false);
+        return parse(source, initialSource, false);
     }
 
     public List<T> parse(CharSequence source, S initialSource, boolean debugLog) {
-        return parse(source, initialSource, debugLog);
+        return parse(source, initialSource, rules, debugLog);
     }
 
     /**
