@@ -4,6 +4,7 @@ import me.vankka.simpleast.core.node.Node;
 
 import java.util.Collection;
 
+@SuppressWarnings("unchecked")
 public class ASTUtils {
 
     public static void traversePreOrder(final Collection<? extends Node> ast, final NodeProcessor nodeProcessor) {

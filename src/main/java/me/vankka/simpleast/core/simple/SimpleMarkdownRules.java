@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("WeakerAccess")
 public class SimpleMarkdownRules {
 
     private static final Pattern PATTERN_BOLD = Pattern.compile("^\\*\\*([\\s\\S]+?)\\*\\*(?!\\*)");
@@ -39,19 +40,19 @@ public class SimpleMarkdownRules {
                     ")\\*(?!\\*)"
     );
 
-    private static <R, S> Rule<R, Node<R>, S> createBoldRule() {
+    public static <R, S> Rule<R, Node<R>, S> createBoldRule() {
         return createSimpleStyleRule(PATTERN_BOLD, new TextStyle(TextStyle.Type.BOLD));
     }
 
-    private static <R, S> Rule<R, Node<R>, S> createUnderlineRule() {
+    public static <R, S> Rule<R, Node<R>, S> createUnderlineRule() {
         return createSimpleStyleRule(PATTERN_UNDERLINE, new TextStyle(TextStyle.Type.UNDERLINE));
     }
 
-    private static <R, S> Rule<R, Node<R>, S> createStrikethruRule() {
+    public static <R, S> Rule<R, Node<R>, S> createStrikethruRule() {
         return createSimpleStyleRule(PATTERN_STRIKETHRU, new TextStyle(TextStyle.Type.STRIKETHROUGH));
     }
 
-    private static <R, S> Rule<R, Node<R>, S> createTextRule() {
+    public static <R, S> Rule<R, Node<R>, S> createTextRule() {
         return new Rule<R, Node<R>, S>(PATTERN_TEXT) {
 
             @Override
@@ -61,7 +62,7 @@ public class SimpleMarkdownRules {
         };
     }
 
-    private static <R, S> Rule<R, Node<R>, S> createNewlineRule() {
+    public static <R, S> Rule<R, Node<R>, S> createNewlineRule() {
         return new Rule<R, Node<R>, S>(PATTERN_NEWLINE) {
 
             @Override
@@ -71,7 +72,7 @@ public class SimpleMarkdownRules {
         };
     }
 
-    private static <R, S> Rule<R, Node<R>, S> createEscapeRule() {
+    public static <R, S> Rule<R, Node<R>, S> createEscapeRule() {
         return new Rule<R, Node<R>, S>(PATTERN_ESCAPE) {
 
             @Override
@@ -81,7 +82,7 @@ public class SimpleMarkdownRules {
         };
     }
 
-    private static <R, S> Rule<R, Node<R>, S> createItalicsRule() {
+    public static <R, S> Rule<R, Node<R>, S> createItalicsRule() {
         return new Rule<R, Node<R>, S>(PATTERN_ITALICS) {
 
             @Override
@@ -103,7 +104,7 @@ public class SimpleMarkdownRules {
         };
     }
 
-    private static <R, S> Rule<R, Node<R>, S> createSimpleStyleRule(Pattern pattern, TextStyle textStyle) {
+    public static <R, S> Rule<R, Node<R>, S> createSimpleStyleRule(Pattern pattern, TextStyle textStyle) {
         return new Rule<R, Node<R>, S>(pattern) {
 
             @Override
