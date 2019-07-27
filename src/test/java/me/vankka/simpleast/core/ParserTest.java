@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ParserTest {
 
-    private Parser<Object, Node<Object>> parser;
+    private Parser<Object, Node<Object>, Object> parser;
     private TreeMatcher treeMatcher;
 
     @Before

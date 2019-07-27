@@ -31,6 +31,18 @@ public class Parser<R, T extends Node<R>, S> {
         return rules;
     }
 
+    public List<T> parse(CharSequence source) {
+        return parse(source, null);
+    }
+
+    public List<T> parse(CharSequence source, S initialSource) {
+        return parse(source, initialSource, rules, false);
+    }
+
+    public List<T> parse(CharSequence source, S initialSource, boolean debugLog) {
+        return parse(source, initialSource, debugLog);
+    }
+
     /**
      * Transforms the source to a AST of {@link Node}s using the provided rules.
      *
