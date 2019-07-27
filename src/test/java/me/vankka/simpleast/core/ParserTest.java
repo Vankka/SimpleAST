@@ -43,7 +43,7 @@ public class ParserTest {
     public void testParseFormattedText() throws Exception {
         final List<Node<Object>> ast = parser.parse("**bold**");
 
-        final StyleNode boldNode = StyleNode.Companion.createWithText("bold", Collections.singletonList(TextStyle.BOLD));
+        final StyleNode boldNode = StyleNode.Companion.createWithText("bold", Collections.singletonList(new TextStyle(TextStyle.Type.BOLD)));
 
         final List<? extends Node> model = Collections.singletonList(boldNode);
         Assert.assertTrue(treeMatcher.matches(model, ast));
@@ -54,7 +54,7 @@ public class ParserTest {
         final List<Node<Object>> ast = parser.parse("**bold** and not bold");
 
 
-        final StyleNode boldNode = StyleNode.Companion.createWithText("bold", Collections.singletonList(TextStyle.BOLD));
+        final StyleNode boldNode = StyleNode.Companion.createWithText("bold", Collections.singletonList(new TextStyle(TextStyle.Type.BOLD)));
         final TextNode trailingText = new TextNode(" and not bold");
 
         final List<? extends Node> model = Arrays.asList(boldNode, trailingText);
@@ -66,7 +66,7 @@ public class ParserTest {
         final List<Node<Object>> ast = parser.parse("not bold **and bold**");
 
         final TextNode leadingText = new TextNode("not bold ");
-        final StyleNode boldNode = StyleNode.Companion.createWithText("and bold", Collections.singletonList(TextStyle.BOLD));
+        final StyleNode boldNode = StyleNode.Companion.createWithText("and bold", Collections.singletonList(new TextStyle(TextStyle.Type.BOLD)));
 
         final List<? extends Node> model = Arrays.asList(leadingText, boldNode);
         Assert.assertTrue(treeMatcher.matches(model, ast));
@@ -80,9 +80,9 @@ public class ParserTest {
 //            "t"
 //        + "______");
 
-        final StyleNode<Object, ?> boldNode = new StyleNode<>(Collections.singletonList(TextStyle.BOLD));
+        final StyleNode<Object, ?> boldNode = new StyleNode<>(Collections.singletonList(new TextStyle(TextStyle.Type.BOLD)));
         boldNode.addChild(new TextNode<>("bold "));
-        boldNode.addChild(StyleNode.Companion.createWithText("and italics", Collections.singletonList(TextStyle.ITALICS)));
+        boldNode.addChild(StyleNode.Companion.createWithText("and italics", Collections.singletonList(new TextStyle(TextStyle.Type.ITALICS))));
         boldNode.addChild(new TextNode<>(" and more bold"));
 
         final List<? extends Node> model = Collections.singletonList(boldNode);

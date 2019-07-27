@@ -67,6 +67,7 @@ public class TreeMatcher {
         matchers.put(clazz, matcher);
     }
 
+    @SuppressWarnings("unchecked")
     public void registerDefaultMatchers() {
         registerMatcher(TextNode.class, (node1, node2) -> {
             final TextNode textNode1 = (TextNode) node1;
@@ -91,6 +92,10 @@ public class TreeMatcher {
                 final TextStyle style2 = styles2.get(i);
 
                 if (style1.getClass() != style2.getClass()) {
+                    return false;
+                }
+
+                if (!style1.equals(style2)) {
                     return false;
                 }
             }

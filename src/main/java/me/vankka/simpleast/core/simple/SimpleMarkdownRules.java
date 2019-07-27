@@ -40,15 +40,15 @@ public class SimpleMarkdownRules {
     );
 
     private static <R, S> Rule<R, Node<R>, S> createBoldRule() {
-        return createSimpleStyleRule(PATTERN_BOLD, TextStyle.BOLD);
+        return createSimpleStyleRule(PATTERN_BOLD, new TextStyle(TextStyle.Type.BOLD));
     }
 
     private static <R, S> Rule<R, Node<R>, S> createUnderlineRule() {
-        return createSimpleStyleRule(PATTERN_UNDERLINE, TextStyle.UNDERLINE);
+        return createSimpleStyleRule(PATTERN_UNDERLINE, new TextStyle(TextStyle.Type.UNDERLINE));
     }
 
     private static <R, S> Rule<R, Node<R>, S> createStrikethruRule() {
-        return createSimpleStyleRule(PATTERN_STRIKETHRU, TextStyle.STRIKETHROUGH);
+        return createSimpleStyleRule(PATTERN_STRIKETHRU, new TextStyle(TextStyle.Type.STRIKETHROUGH));
     }
 
     private static <R, S> Rule<R, Node<R>, S> createTextRule() {
@@ -97,7 +97,7 @@ public class SimpleMarkdownRules {
                     endIndex = matcher.end(1);
                 }
 
-                List<TextStyle> styles = new ArrayList<>(Collections.singletonList(TextStyle.ITALICS));
+                List<TextStyle> styles = new ArrayList<>(Collections.singletonList(new TextStyle(TextStyle.Type.ITALICS)));
                 return ParseSpec.createNonterminal(new StyleNode<>(styles), state, startIndex, endIndex);
             }
         };
