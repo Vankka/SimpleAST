@@ -79,7 +79,7 @@ public class Parser<R, T extends Node<R>, S> {
                 Matcher matcher = rule.match(inspectionSource, lastCapture, builder.getState());
                 if (matcher != null) {
                     if (debugLog) {
-                        System.out.println("MATCH: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source);
+                        System.out.println("MATCH: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source + " with match: " + matcher.toMatchResult());
                     }
                     int matcherSourceEnd = matcher.end() + offset;
                     foundRule = true;

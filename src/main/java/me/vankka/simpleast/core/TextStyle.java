@@ -51,6 +51,11 @@ public class TextStyle {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "TextStyle(" + type + ") [" + extra + "]";
+    }
+
     @SuppressWarnings("unused")
     public enum Type {
         /* Basic Markdown: */ /** {@link me.vankka.simpleast.core.simple.SimpleMarkdownRules} */
