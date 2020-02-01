@@ -1,19 +1,61 @@
-plugins {
-    id 'io.franzbecker.gradle-lombok' version '1.14'
-    id 'java'
-    id 'idea'
-    id 'maven'
+buildscript {
+    ext.kotlin_version = '1.2.41'
+    ext.supportlibrary_version = '27.1.1'
+
+    repositories {
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:' + kotlin_version
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
 }
 
-group 'me.vankka'
-version '2.0.4-SNAPSHOT'
+apply plugin: 'kotlin'
+apply plugin: 'java'
+apply plugin: 'maven-publish'
 
-sourceCompatibility = 1.8
+group = 'dev.vankka'
+version = '2.0.0'
+
+repositories {
+    jcenter()
+    google()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            credentials {
+                username System.getenv('NEXUS_USERNAME')
+                password System.getenv('NEXUS_PASSWORD')
+            }
+            url version.endsWith('-SNAPSHOT') ? 'https://nexus.vankka.dev/repository/maven-snapshots/' : 'https://nexus.vankka.dev/repository/maven-releases/'
+        }
+    }
+}
+
+dependencies {
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + kotlin_version
+
+    testImplementation 'junit:junit:4.12'
+}
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+tasks.withType(Javadoc).all {
+    enabled = false
 }

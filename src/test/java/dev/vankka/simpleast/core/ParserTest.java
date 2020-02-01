@@ -1,11 +1,7 @@
-package me.vankka.simpleast.core;
+package dev.vankka.simpleast.core;
 
-import me.vankka.simpleast.core.node.Node;
-import me.vankka.simpleast.core.node.StyleNode;
-import me.vankka.simpleast.core.node.TextNode;
-import me.vankka.simpleast.core.parser.Parser;
-import me.vankka.simpleast.core.simple.SimpleMarkdownRules;
-import me.vankka.simpleast.core.util.TreeMatcher;
+import dev.vankka.simpleast.core.simple.SimpleMarkdownRules;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,6 +11,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import dev.vankka.simpleast.core.node.Node;
+import dev.vankka.simpleast.core.node.StyleNode;
+import dev.vankka.simpleast.core.node.TextNode;
+import dev.vankka.simpleast.core.parser.Parser;
+import dev.vankka.simpleast.core.utils.TreeMatcher;
+
 public class ParserTest {
 
     private Parser<Object, Node<Object>, Object> parser;
@@ -23,7 +25,7 @@ public class ParserTest {
     @Before
     public void setup() {
         parser = new Parser<>();
-        parser.addRules(SimpleMarkdownRules.createSimpleMarkdownRules(true));
+        parser.addRules(SimpleMarkdownRules.createSimpleMarkdownRules());
         treeMatcher = new TreeMatcher();
         treeMatcher.registerDefaultMatchers();
     }
@@ -35,15 +37,15 @@ public class ParserTest {
 
     @Test
     public void testEmptyParse() throws Exception {
-        final List<Node<Object>> ast = parser.parse("");
+        final List<Node<Object>> ast = parser.parse("", null);
         Assert.assertTrue(ast.isEmpty());
     }
 
     @Test
     public void testParseFormattedText() throws Exception {
-        final List<Node<Object>> ast = parser.parse("**bold**");
+        final List<Node<Object>> ast = parser.parse("**bold**", null);
 
-        final StyleNode boldNode = StyleNode.Companion.createWithText("bold", Collections.singletonList(new TextStyle(TextStyle.Type.BOLD)));
+        final StyleNode boldNode = StyleNode.Companion.createWithText("bold", Collections.singletonList((TextStyle) new TextStyle(TextStyle.Type.BOLD)));
 
         final List<? extends Node> model = Collections.singletonList(boldNode);
         Assert.assertTrue(treeMatcher.matches(model, ast));
@@ -51,10 +53,9 @@ public class ParserTest {
 
     @Test
     public void testParseLeadingFormatting() throws Exception {
-        final List<Node<Object>> ast = parser.parse("**bold** and not bold");
+        final List<Node<Object>> ast = parser.parse("**bold** and not bold", null);
 
-
-        final StyleNode boldNode = StyleNode.Companion.createWithText("bold", Collections.singletonList(new TextStyle(TextStyle.Type.BOLD)));
+        final StyleNode boldNode = StyleNode.Companion.createWithText("bold", Collections.singletonList((TextStyle) new TextStyle(TextStyle.Type.BOLD)));
         final TextNode trailingText = new TextNode(" and not bold");
 
         final List<? extends Node> model = Arrays.asList(boldNode, trailingText);
@@ -63,10 +64,10 @@ public class ParserTest {
 
     @Test
     public void testParseTrailingFormatting() throws Exception {
-        final List<Node<Object>> ast = parser.parse("not bold **and bold**");
+        final List<Node<Object>> ast = parser.parse("not bold **and bold**", null);
 
         final TextNode leadingText = new TextNode("not bold ");
-        final StyleNode boldNode = StyleNode.Companion.createWithText("and bold", Collections.singletonList(new TextStyle(TextStyle.Type.BOLD)));
+        final StyleNode boldNode = StyleNode.Companion.createWithText("and bold", Collections.singletonList((TextStyle) new TextStyle(TextStyle.Type.BOLD)));
 
         final List<? extends Node> model = Arrays.asList(leadingText, boldNode);
         Assert.assertTrue(treeMatcher.matches(model, ast));
@@ -75,29 +76,30 @@ public class ParserTest {
     @Test
     public void testNestedFormatting() throws Exception {
 //        final List<Node> ast = parser.parse("*** test1 ** test2 * test3 * test4 ** test5 ***");
-        final List<Node<Object>> ast = parser.parse("**bold *and italics* and more bold**");
+        final List<Node<Object>> ast = parser.parse("**bold *and italics* and more bold**", null);
 //        final List<Node> ast = parser.parse("______" +
 //            "t"
 //        + "______");
 
-        final StyleNode<Object, ?> boldNode = new StyleNode<>(Collections.singletonList(new TextStyle(TextStyle.Type.BOLD)));
+        final StyleNode<Object, ?> boldNode = new StyleNode<>(Collections.singletonList((TextStyle) new TextStyle(TextStyle.Type.BOLD)));
         boldNode.addChild(new TextNode<>("bold "));
-        boldNode.addChild(StyleNode.Companion.createWithText("and italics", Collections.singletonList(new TextStyle(TextStyle.Type.ITALICS))));
+        boldNode.addChild(StyleNode.Companion.createWithText("and italics",
+            Collections.singletonList((TextStyle) new TextStyle(TextStyle.Type.ITALICS))));
         boldNode.addChild(new TextNode<>(" and more bold"));
 
         final List<? extends Node> model = Collections.singletonList(boldNode);
         Assert.assertTrue(treeMatcher.matches(model, ast));
     }
 
-//    @Test
+    @Test
     public void testNewlineRule() {
-        final List<Node<Object>> ast = parser.parse("Some text\n\n\n  \n\n\nnewline above");
+        final List<Node<Object>> ast = parser.parse("Some text\n\n\n  \n\n\nnewline above", null);
 
         final List<? extends Node> model = Arrays.asList(
-                new TextNode<>("Some text"),
-                new TextNode<>("\n"),
-                new TextNode<>("\n"),
-                new TextNode<>("newline above"));
+            new TextNode<>("Some text"),
+            new TextNode<>("\n"),
+            new TextNode<>("\n"),
+            new TextNode<>("newline above"));
         Assert.assertTrue("actual " + ast, treeMatcher.matches(model, ast));
     }
 }

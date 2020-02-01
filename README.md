@@ -1,26 +1,47 @@
-## Modifications
-Fork of https://github.com/discordapp/SimpleAST
+# SimpleAST
 
- * Converted all Kotlin code to Java
- * Removed all rendering
- * Remove everything Android related
-   * Removed the `app` module (and made `simpleast-core` the root module)
-   
-[![Build Status](https://travis-ci.org/Vankka/SimpleAST.svg?branch=master)](https://travis-ci.org/Vankka/SimpleAST)
+## This fork
+### Changes
+ - Removed Android and rendering
+ - Removed app module and made the `simpleast-core` sub project the root project
+ - Package name changed from `com.discordapp.simpleast` to `dev.vankka.simpleast` (differentiates it from the upstream library)
 
-```
+### Dependency information
+#### Gradle
+```groovy
 repositories {
-    maven { url 'https://jitpack.io' }
+    maven {
+        name = 'Vankka-Nexus'
+        url = 'https://nexus.vankka.dev/repository/maven-public/'
+    }
 }
 
 dependencies {
-    implementation 'com.github.Vankka:SimpleAST:master-SNAPSHOT'
+    implementation 'dev.vankka:SimpleAST:2.0.0'
 }
 ```
 
-# SimpleAST
+#### Maven
+```xml
+<repositories>
+    <repository>
+        <id>Vankka-Nexus</id>
+        <url>https://nexus.vankka.dev/repository/maven-public/</url>
+    </repository>
+</repositories>
 
-SimpleAST is a ~~Kotlin~~/Java library designed to parse text into Abstract Syntax Trees. It is heavily inspired by (and began as a port of) [Khan Academy's simple-markdown](https://github.com/Khan/simple-markdown).
+<dependencies>
+    <dependency>
+        <groupId>dev.vankka</groupId>
+        <artifactId>SimpleAST</artifactId>
+        <version>2.0.0</version>
+    </dependency>
+</dependencies>
+```
+
+## SimpleAST information
+
+SimpleAST is a Kotlin/Java library designed to parse text into Abstract Syntax Trees. It is heavily inspired by (and began as a port of) [Khan Academy's simple-markdown](https://github.com/Khan/simple-markdown).
 
 It strives for extensibility and robustness. How text is parsed into nodes in a tree is determined by a set of rules, provided by the client. This makes detecting and rendering your own custom entities in text a breeze.
 
@@ -30,21 +51,9 @@ For example:
 
 "<@123456789> has \*\*joined the server\*\*." becomes "@AndyG has **joined the server**." Read more here: [How Discord Renders Rich Messages on the Android App](https://blog.discordapp.com/how-discord-renders-rich-messages-on-the-android-app-67b0e5d56fbe)
 
-# Using SimpleAST in your application
+# Using SimpleAST in your application (See above for this fork)
 If you are building with Gradle, simply add the following line to the dependencies section of your build.gradle file:
 
-This fork
-```
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-
-dependencies {
-    implementation 'com.github.Vankka:SimpleAST:master-SNAPSHOT'
-}
-```
-
-discordapp's repo
 ```
 implementation 'com.discord:simpleast:1.1.1'
 ```
@@ -87,7 +96,7 @@ We create a simple `Rule` that detects and performs the replacement:
 
 ```kotlin
 class FooRule : Rule<Any?, Node<Any?>>(Pattern.compile("^<Foo>")) {
-  override fun parse(matcher: Matcher, parser: Parser<Any?, in Node<Any?>>, isNested: Boolean): ParseSpec<Any?, Node<Any?>>{
+  override fun parse(matcher: Matcher, parser: Parser<Any?, in Node<Any?>>, isNested: Boolean): ParseSpec<Any?, Node<Any?>> {
     return ParseSpec.createTerminal(TextNode("Bar"))
   }
 }

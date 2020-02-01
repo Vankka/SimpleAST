@@ -1,4 +1,5 @@
-package me.vankka.simpleast.core;
+package dev.vankka.simpleast.core;
+
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,7 +59,7 @@ public class TextStyle {
 
     @SuppressWarnings("unused")
     public enum Type {
-        /* Basic Markdown: */ /** {@link me.vankka.simpleast.core.simple.SimpleMarkdownRules} */
+        /* Basic Markdown: */ /** {@link dev.vankka.simpleast.core.simple.SimpleMarkdownRules} */
         BOLD,
         UNDERLINE,
         ITALICS,
