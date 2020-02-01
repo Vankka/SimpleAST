@@ -36,15 +36,20 @@ object SimpleMarkdownRules {
           ")\\*(?!\\*)"
   )
 
+  @JvmStatic
   fun <R, S> createBoldRule(): Rule<R, Node<R>, S> =
           createSimpleStyleRule(PATTERN_BOLD) { listOf(TextStyle(TextStyle.Type.BOLD)) }
 
+  @JvmStatic
   fun <R, S> createUnderlineRule(): Rule<R, Node<R>, S> =
           createSimpleStyleRule(PATTERN_UNDERLINE) { listOf(TextStyle(TextStyle.Type.UNDERLINE)) }
 
+  @JvmStatic
   fun <R, S> createStrikethruRule(): Rule<R, Node<R>, S> =
           createSimpleStyleRule(PATTERN_STRIKETHRU) { listOf(TextStyle(TextStyle.Type.STRIKETHROUGH)) }
 
+
+  @JvmStatic
   fun <R, S> createTextRule(): Rule<R, Node<R>, S> {
     return object : Rule<R, Node<R>, S>(PATTERN_TEXT) {
       override fun parse(matcher: Matcher, parser: Parser<R, in Node<R>, S>, state: S): ParseSpec<R, Node<R>, S> {
@@ -53,6 +58,8 @@ object SimpleMarkdownRules {
       }
     }
   }
+
+  @JvmStatic
   fun <R, S> createNewlineRule(): Rule<R, Node<R>, S> {
     return object : Rule.BlockRule<R, Node<R>, S>(PATTERN_NEWLINE) {
       override fun parse(matcher: Matcher, parser: Parser<R, in Node<R>, S>, state: S): ParseSpec<R, Node<R>, S> {
@@ -62,6 +69,7 @@ object SimpleMarkdownRules {
     }
   }
 
+  @JvmStatic
   fun <R, S> createEscapeRule(): Rule<R, Node<R>, S> {
     return object : Rule<R, Node<R>, S>(PATTERN_ESCAPE) {
       override fun parse(matcher: Matcher, parser: Parser<R, in Node<R>, S>, state: S): ParseSpec<R, Node<R>, S> {
@@ -70,6 +78,7 @@ object SimpleMarkdownRules {
     }
   }
 
+  @JvmStatic
   fun <R, S> createItalicsRule(): Rule<R, Node<R>, S> {
     return object : Rule<R, Node<R>, S>(PATTERN_ITALICS) {
       override fun parse(matcher: Matcher, parser: Parser<R, in Node<R>, S>, state: S): ParseSpec<R, Node<R>, S> {
