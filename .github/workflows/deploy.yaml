@@ -1,0 +1,20 @@
+name: Deploy
+
+on:
+  release:
+    types: [published]
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+      - name: Deploy to Nexus with Gradle
+        run: ./gradlew publish
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
