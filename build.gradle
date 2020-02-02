@@ -21,7 +21,7 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 group = 'dev.vankka'
-version = '2.1.0'
+version = '2.1.1-SNAPSHOT'
 
 repositories {
     jcenter()
