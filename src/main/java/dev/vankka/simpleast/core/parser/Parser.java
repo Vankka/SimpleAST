@@ -16,6 +16,15 @@ import java.util.regex.Matcher;
 public class Parser<R, T extends Node<R>, S> {
 
     private final List<Rule<R, T, S>> rules = new ArrayList<>();
+    private final boolean enableDebugging;
+
+    public Parser(boolean enableDebugging) {
+        this.enableDebugging = enableDebugging;
+    }
+
+    public Parser() {
+        this.enableDebugging = false;
+    }
 
     public Parser<R, T, S> addRule(Rule<R, T, S> rule) {
         this.rules.add(rule);
@@ -36,11 +45,7 @@ public class Parser<R, T extends Node<R>, S> {
     }
 
     public List<T> parse(CharSequence source, S initialSource) {
-        return parse(source, initialSource, false);
-    }
-
-    public List<T> parse(CharSequence source, S initialSource, boolean debugLog) {
-        return parse(source, initialSource, rules, debugLog);
+        return parse(source, initialSource, rules);
     }
 
     /**
@@ -51,7 +56,7 @@ public class Parser<R, T extends Node<R>, S> {
      *
      * @throws ParseException for certain specific error flows.
      */
-    public List<T> parse(CharSequence source, S initialState, List<Rule<R, T, S>> rules, boolean debugLog) {
+    public List<T> parse(CharSequence source, S initialState, List<Rule<R, T, S>> rules) {
         if (rules == null)
             rules = this.rules;
 
@@ -78,7 +83,7 @@ public class Parser<R, T extends Node<R>, S> {
             for (Rule<R, T, S> rule : rules) {
                 Matcher matcher = rule.match(inspectionSource, lastCapture, builder.getState());
                 if (matcher != null) {
-                    if (debugLog) {
+                    if (enableDebugging) {
                         System.out.println("MATCH: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source + " with match: " + matcher.toMatchResult());
                     }
                     int matcherSourceEnd = matcher.end() + offset;
@@ -117,7 +122,7 @@ public class Parser<R, T extends Node<R>, S> {
                     }
 
                     break;
-                } else if (debugLog) {
+                } else if (enableDebugging) {
                     System.out.println("MISS: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source);
                 }
             }
