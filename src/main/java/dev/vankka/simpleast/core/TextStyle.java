@@ -44,7 +44,8 @@ public class TextStyle {
         }
 
         for (Map.Entry<String, String> entry : extra.entrySet()) {
-            if (!other.getExtra().get(entry.getKey()).equals(entry.getValue())) {
+            String otherValue = other.getExtra().get(entry.getKey());
+            if (otherValue == null || !otherValue.equals(entry.getValue())) {
                 return false;
             }
         }
