@@ -1,5 +1,6 @@
 package dev.vankka.simpleast.core;
 
+import dev.vankka.simpleast.core.simple.SimpleMarkdownRules;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,8 +45,7 @@ public class TextStyle {
         }
 
         for (Map.Entry<String, String> entry : extra.entrySet()) {
-            String otherValue = other.getExtra().get(entry.getKey());
-            if (otherValue == null || !otherValue.equals(entry.getValue())) {
+            if (!other.getExtra().get(entry.getKey()).equals(entry.getValue())) {
                 return false;
             }
         }
@@ -60,7 +60,7 @@ public class TextStyle {
 
     @SuppressWarnings("unused")
     public enum Type {
-        /* Basic Markdown: */ /** {@link dev.vankka.simpleast.core.simple.SimpleMarkdownRules} */
+        /* Basic Markdown: */ /** {@link SimpleMarkdownRules} */
         BOLD,
         UNDERLINE,
         ITALICS,

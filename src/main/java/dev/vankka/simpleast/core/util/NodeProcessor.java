@@ -1,4 +1,4 @@
-package dev.vankka.simpleast.core.utils;
+package dev.vankka.simpleast.core.util;
 
 import dev.vankka.simpleast.core.node.Node;
 

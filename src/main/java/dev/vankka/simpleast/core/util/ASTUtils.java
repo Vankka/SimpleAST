@@ -1,9 +1,10 @@
-package dev.vankka.simpleast.core.utils;
-
-import java.util.Collection;
+package dev.vankka.simpleast.core.util;
 
 import dev.vankka.simpleast.core.node.Node;
 
+import java.util.Collection;
+
+@SuppressWarnings("unchecked")
 public class ASTUtils {
 
     public static void traversePreOrder(final Collection<? extends Node> ast, final NodeProcessor nodeProcessor) {
