@@ -2,7 +2,7 @@
 
 ## This fork
 ### Changes
- - Removed Android and rendering
+ - Removed Android, Kotlin and rendering code
  - Removed app module and made the `simpleast-core` sub project the root project
  - Package name changed from `com.discordapp.simpleast` to `dev.vankka.simpleast` (differentiates it from the upstream library)
 
