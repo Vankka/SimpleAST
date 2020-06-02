@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'dev.vankka'
-version = '2.2.1'
+version = '2.2.2-SNAPSHOT'
 
 repositories {
     jcenter()
