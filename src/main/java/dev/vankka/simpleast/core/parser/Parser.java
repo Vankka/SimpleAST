@@ -3,10 +3,7 @@ package dev.vankka.simpleast.core.parser;
 import dev.vankka.simpleast.core.ParseException;
 import dev.vankka.simpleast.core.node.Node;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.regex.Matcher;
 
 /**
@@ -36,8 +33,21 @@ public class Parser<R, T extends Node<R>, S> {
         return this;
     }
 
+    public Parser<R, T, S> removeRule(Rule<R, T, S> rule) {
+        this.rules.remove(rule);
+        return this;
+    }
+
+    public Parser<R, T, S> removeRules(Collection<Rule<R, T, S>> rules) {
+        this.rules.removeAll(rules);
+        return this;
+    }
+
+    /**
+     * @return immutable list of rules that this Parser uses by default
+     */
     public List<Rule<R, T, S>> getRules() {
-        return rules;
+        return Collections.unmodifiableList(rules);
     }
 
     public List<T> parse(CharSequence source) {
