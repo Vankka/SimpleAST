@@ -57,6 +57,18 @@ public class Parser<R, T extends Node<R>, S> {
      * @throws ParseException for certain specific error flows.
      */
     public List<T> parse(CharSequence source, S initialState, List<Rule<R, T, S>> rules) {
+        return parse(source, initialState, rules, enableDebugging);
+    }
+
+    /**
+     * Transforms the source to a AST of {@link Node}s using the provided rules.
+     *
+     * @param rules Ordered List of rules to use to convert the source to nodes.
+     *    If null, the parser will use its global list of Parser.rules.
+     *
+     * @throws ParseException for certain specific error flows.
+     */
+    public List<T> parse(CharSequence source, S initialState, List<Rule<R, T, S>> rules, boolean enableDebugging) {
         if (rules == null)
             rules = this.rules;
 
