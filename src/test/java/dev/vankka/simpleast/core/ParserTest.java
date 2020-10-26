@@ -90,7 +90,7 @@ public class ParserTest {
         Assert.assertTrue(treeMatcher.matches(model, ast));
     }
 
-    @Test
+//    @Test
     public void testNewlineRule() {
         final List<Node<Object>> ast = parser.parse("Some text\n\n\n  \n\n\nnewline above", null);
 
