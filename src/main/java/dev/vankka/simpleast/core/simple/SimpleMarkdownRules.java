@@ -17,16 +17,16 @@ import java.util.regex.Pattern;
 @SuppressWarnings("WeakerAccess")
 public class SimpleMarkdownRules {
 
-    private static final Pattern PATTERN_BOLD = Pattern.compile("^\\*\\*([\\s\\S]+?)\\*\\*(?!\\*)");
-    private static final Pattern PATTERN_UNDERLINE = Pattern.compile("^__([\\s\\S]+?)__(?!_)");
-    private static final Pattern PATTERN_STRIKETHRU = Pattern.compile("^~~(?=\\S)([\\s\\S]*?\\S)~~");
-    private static final Pattern PATTERN_NEWLINE = Pattern.compile("^(?:\n *)*\n", Pattern.LITERAL);
-    private static final Pattern PATTERN_TEXT = Pattern.compile("^[\\s\\S]+?(?=[^0-9A-Za-z\\s\\u00c0-\\uffff]|\\n| {2,}\\n|\\w+:\\S|$)");
-    private static final Pattern PATTERN_ESCAPE = Pattern.compile("^\\\\([^0-9A-Za-z\\s])");
+    private static final Pattern PATTERN_BOLD = Pattern.compile("\\*\\*([\\s\\S]+?)\\*\\*(?!\\*)");
+    private static final Pattern PATTERN_UNDERLINE = Pattern.compile("__([\\s\\S]+?)__(?!_)");
+    private static final Pattern PATTERN_STRIKETHRU = Pattern.compile("~~(?=\\S)([\\s\\S]*?\\S)~~");
+    private static final Pattern PATTERN_NEWLINE = Pattern.compile("(?:\n *)*\n", Pattern.LITERAL);
+    private static final Pattern PATTERN_TEXT = Pattern.compile("[\\s\\S]+?(?=[^0-9A-Za-z\\s\\u00c0-\\uffff]|\\n| {2,}\\n|\\w+:\\S|$)");
+    private static final Pattern PATTERN_ESCAPE = Pattern.compile("\\\\([^0-9A-Za-z\\s])");
 
     private static final Pattern PATTERN_ITALICS = Pattern.compile(
             // only match _s surrounding words.
-            "^\\b_" + "((?:__|\\\\[\\s\\S]|[^\\\\_])+?)_" + "\\b" +
+            "\\b_" + "((?:__|\\\\[\\s\\S]|[^\\\\_])+?)_" + "\\b" +
                     "|" +
                     // Or match *s that are followed by a non-space:
                     "^\\*(?=\\S)(" +
