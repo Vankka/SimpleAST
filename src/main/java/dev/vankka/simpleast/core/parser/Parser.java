@@ -104,7 +104,7 @@ public class Parser<R, T extends Node<R>, S> {
             boolean foundRule = false;
             for (Rule<R, T, S> rule : rules) {
                 Matcher matcher = rule.match(inspectionSource, lastCapture, builder.getState());
-                if (matcher != null) {
+                if (matcher != null && matcher.start() == 0) {
                     if (enableDebugging) {
                         System.out.println("MATCH: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source + " with match: " + matcher.toMatchResult());
                     }
