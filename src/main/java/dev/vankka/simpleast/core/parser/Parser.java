@@ -99,6 +99,7 @@ public class Parser<R, T extends Node<R>, S> {
             }
 
             CharSequence inspectionSource = source.subSequence(builder.getStartIndex(), builder.getEndIndex());
+            System.out.println("inspection: " + inspectionSource);
             int offset = builder.getStartIndex();
 
             boolean foundRule = false;
@@ -113,8 +114,9 @@ public class Parser<R, T extends Node<R>, S> {
 
                     int matcherStart = matcher.start();
                     if (matcherStart != 0) {
-                        remainingParses.push(new ParseSpec<>(null, initialState, matcherStart, builder.getEndIndex()));
-                        remainingParses.push(new ParseSpec<>(null, initialState, 0, matcherStart));
+                        remainingParses.push(new ParseSpec<>(null, initialState, matcherSourceEnd, builder.getEndIndex()));
+                        remainingParses.push(new ParseSpec<>(null, initialState, matcherStart + offset, matcherSourceEnd));
+                        remainingParses.push(new ParseSpec<>(null, initialState, offset, matcherStart + 1));
                         break;
                     }
 
