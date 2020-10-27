@@ -114,8 +114,7 @@ public class Parser<R, T extends Node<R>, S> {
 
                     int matcherStart = matcher.start();
                     if (matcherStart != 0) {
-                        remainingParses.push(new ParseSpec<>(null, initialState, matcherSourceEnd, builder.getEndIndex()));
-                        remainingParses.push(new ParseSpec<>(null, initialState, matcherStart + offset, matcherSourceEnd));
+                        remainingParses.push(new ParseSpec<>(null, initialState, matcherStart + offset, builder.getEndIndex()));
                         remainingParses.push(new ParseSpec<>(null, initialState, offset, matcherStart + 1));
                         break;
                     }
