@@ -111,13 +111,6 @@ public class Parser<R, T extends Node<R>, S> {
                     int matcherSourceEnd = matcher.end() + offset;
                     foundRule = true;
 
-                    int groupStart = matcher.start();
-                    if (groupStart != 0) {
-                        remainingParses.add(new ParseSpec<>(null, initialState, groupStart, builder.getEndIndex()));
-                        remainingParses.add(new ParseSpec<>(null, initialState, offset, groupStart));
-                        break;
-                    }
-
                     ParseSpec<R, T, S> newBuilder = rule.parse(matcher, this, builder.getState());
                     T parent = builder.getRoot();
 
