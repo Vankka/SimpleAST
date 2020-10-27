@@ -104,12 +104,19 @@ public class Parser<R, T extends Node<R>, S> {
             boolean foundRule = false;
             for (Rule<R, T, S> rule : rules) {
                 Matcher matcher = rule.match(inspectionSource, lastCapture, builder.getState());
-                if (matcher != null && matcher.start() == 0) {
+                if (matcher != null) {
                     if (enableDebugging) {
                         System.out.println("MATCH: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source + " with match: " + matcher.toMatchResult());
                     }
                     int matcherSourceEnd = matcher.end() + offset;
                     foundRule = true;
+
+                    int groupStart = matcher.start();
+                    if (groupStart != 0) {
+                        remainingParses.add(new ParseSpec<>(null, initialState, groupStart, builder.getEndIndex()));
+                        remainingParses.add(new ParseSpec<>(null, initialState, offset, groupStart));
+                        break;
+                    }
 
                     ParseSpec<R, T, S> newBuilder = rule.parse(matcher, this, builder.getState());
                     T parent = builder.getRoot();

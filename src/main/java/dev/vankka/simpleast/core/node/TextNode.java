@@ -15,6 +15,6 @@ public class TextNode<R> extends Node<R> {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "[" + getChildren().size() + "]: " + content;
+        return getClass().getSimpleName() + "{content=" + content + ", children=" + getChildren() + "}";
     }
 }

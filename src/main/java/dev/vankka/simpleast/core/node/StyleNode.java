@@ -10,13 +10,19 @@ import java.util.List;
  * @param <RC> RenderContext
  * @param <T> Type of Style to apply
  */
-@ToString
 @RequiredArgsConstructor
 public class StyleNode<RC, T> extends Node<RC> {
     private final List<T> styles;
 
     public List<T> getStyles() {
         return styles;
+    }
+
+    @Override
+    public String toString() {
+        return "StyleNode{" +
+                "styles=" + styles +
+                ", children=" + getChildren() + "}";
     }
 
     public static class Companion {
