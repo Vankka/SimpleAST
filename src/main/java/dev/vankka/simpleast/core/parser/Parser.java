@@ -99,7 +99,9 @@ public class Parser<R, T extends Node<R>, S> {
             }
 
             CharSequence inspectionSource = source.subSequence(builder.getStartIndex(), builder.getEndIndex());
-            System.out.println("inspection: " + inspectionSource);
+            if (enableDebugging) {
+                System.out.println("inspection: " + inspectionSource);
+            }
             int offset = builder.getStartIndex();
 
             boolean foundRule = false;
