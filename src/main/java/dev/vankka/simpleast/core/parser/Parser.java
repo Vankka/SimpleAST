@@ -78,17 +78,18 @@ public class Parser<R, T extends Node<R>, S> {
      *
      * @throws ParseException for certain specific error flows.
      */
+    @SuppressWarnings("unchecked")
     public List<T> parse(CharSequence source, S initialState, List<Rule<R, T, S>> rules, boolean enableDebugging) {
         if (rules == null)
             rules = this.rules;
 
         Stack<ParseSpec<R, T, S>> remainingParses = new Stack<>();
-        List<T> topLevelNodes = new ArrayList<>();
+        Node<R> topLevelRootNode = new Node<R>() {};
 
         String lastCapture = null;
 
         if (source != null && !source.toString().isEmpty()) {
-            remainingParses.add(new ParseSpec<>(null, initialState, 0, source.length()));
+            remainingParses.add(new ParseSpec<>((T) topLevelRootNode, initialState, 0, source.length()));
         }
 
         while (!remainingParses.isEmpty()) {
@@ -99,71 +100,56 @@ public class Parser<R, T extends Node<R>, S> {
             }
 
             CharSequence inspectionSource = source.subSequence(builder.getStartIndex(), builder.getEndIndex());
-            if (enableDebugging) {
-                System.out.println("inspection: " + inspectionSource);
-            }
             int offset = builder.getStartIndex();
 
             boolean foundRule = false;
             for (Rule<R, T, S> rule : rules) {
                 Matcher matcher = rule.match(inspectionSource, lastCapture, builder.getState());
-                if (matcher != null) {
+                if (matcher == null) {
                     if (enableDebugging) {
-                        System.out.println("MATCH: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source + " with match: " + matcher.toMatchResult());
+                        System.out.println("MISS: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source);
                     }
-                    int matcherSourceEnd = matcher.end() + offset;
-                    foundRule = true;
-
-                    int matcherStart = matcher.start();
-                    if (matcherStart != 0) {
-                        remainingParses.push(new ParseSpec<>(null, initialState, matcherStart + offset, builder.getEndIndex()));
-                        remainingParses.push(new ParseSpec<>(null, initialState, offset, matcherStart + offset));
-                        break;
-                    }
-
-                    ParseSpec<R, T, S> newBuilder = rule.parse(matcher, this, builder.getState());
-                    T parent = builder.getRoot();
-
-                    T newRoot = newBuilder.getRoot();
-                    if (newRoot != null) {
-                        if (parent != null) {
-                            parent.addChild(newRoot);
-                        } else {
-                            topLevelNodes.add(newRoot);
-                        }
-                    }
-
-                    // In case the last match didn't consume the rest of the source for this subtree,
-                    // make sure the rest of the source is consumed.
-                    if (matcherSourceEnd != builder.getEndIndex()) {
-                        remainingParses.push(ParseSpec.createNonterminal(parent, builder.getState(), matcherSourceEnd, builder.getEndIndex()));
-                    }
-
-                    // We want to speak in terms of indices within the source string,
-                    // but the Rules only see the matchers in the context of the substring
-                    // being examined. Adding this offset addresses that issue.
-                    if (!newBuilder.isTerminal()) {
-                        newBuilder.applyOffset(offset);
-                        remainingParses.push(newBuilder);
-                    }
-
-                    try {
-                        lastCapture = matcher.group(0);
-                    } catch (Throwable throwable) {
-                        throw new ParseException("matcher found no matches", source, throwable);
-                    }
-
-                    break;
-                } else if (enableDebugging) {
-                    System.out.println("MISS: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source);
+                    continue;
                 }
+
+                if (enableDebugging) {
+                    System.out.println("MATCH: with rule with pattern: " + rule.getMatcher().pattern().toString() + " to source: " + source + " with match: " + matcher.toMatchResult());
+                }
+                foundRule = true;
+
+                int matcherSourceEnd = matcher.end() + offset;
+                ParseSpec<R, T, S> newBuilder = rule.parse(matcher, this, builder.getState());
+
+                T parent = builder.getRoot();
+                parent.addChild(newBuilder.getRoot());
+
+                // In case the last match didn't consume the rest of the source for this subtree,
+                // make sure the rest of the source is consumed.
+                if (matcherSourceEnd != builder.getEndIndex()) {
+                    remainingParses.push(ParseSpec.createNonterminal(parent, builder.getState(), matcherSourceEnd, builder.getEndIndex()));
+                }
+
+                // We want to speak in terms of indices within the source string,
+                // but the Rules only see the matchers in the context of the substring
+                // being examined. Adding this offset addresses that issue.
+                if (!newBuilder.isTerminal()) {
+                    newBuilder.applyOffset(offset);
+                    remainingParses.push(newBuilder);
+                }
+
+                try {
+                    lastCapture = matcher.group(0);
+                } catch (Throwable throwable) {
+                    throw new ParseException("matcher found no matches", source, throwable);
+                }
+                break;
             }
 
             if (!foundRule) {
-                throw new ParseException("failed to find rule to match source: ", inspectionSource);
+                throw new ParseException("failed to find rule to match source", inspectionSource);
             }
         }
 
-        return topLevelNodes;
+        return (List<T>) topLevelRootNode.getChildren();
     }
 }
