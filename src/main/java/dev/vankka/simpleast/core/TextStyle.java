@@ -36,22 +36,7 @@ public class TextStyle {
         }
 
         TextStyle other = (TextStyle) obj;
-        if (other.getType() != type) {
-            return false;
-        }
-
-        if (other.getExtra().size() != extra.size()) {
-            return false;
-        }
-
-        for (Map.Entry<String, String> entry : extra.entrySet()) {
-            String otherValue = other.getExtra().get(entry.getKey());
-            if (otherValue == null || !otherValue.equals(entry.getValue())) {
-                return false;
-            }
-        }
-
-        return true;
+        return other.getType() == type;
     }
 
     @Override
