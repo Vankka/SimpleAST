@@ -8,9 +8,7 @@ import dev.vankka.simpleast.core.parser.ParseSpec;
 import dev.vankka.simpleast.core.parser.Parser;
 import dev.vankka.simpleast.core.parser.Rule;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -90,7 +88,8 @@ public class SimpleMarkdownRules {
                 int startIndex;
                 int endIndex;
                 String asteriskMatch = matcher.group(2);
-                if (asteriskMatch != null && asteriskMatch.length() > 0) {
+                boolean asterisk = asteriskMatch != null && asteriskMatch.length() > 0;
+                if (asterisk) {
                     startIndex = matcher.start(2);
                     endIndex = matcher.end(2);
                 } else {
@@ -98,7 +97,10 @@ public class SimpleMarkdownRules {
                     endIndex = matcher.end(1);
                 }
 
-                List<TextStyle> styles = new ArrayList<>(Collections.singletonList(new TextStyle(TextStyle.Type.ITALICS)));
+                Map<String, String> extra = new HashMap<>();
+                extra.put("asterisk", String.valueOf(asterisk));
+
+                List<TextStyle> styles = new ArrayList<>(Collections.singletonList(new TextStyle(TextStyle.Type.ITALICS, extra)));
                 return ParseSpec.createNonterminal(new StyleNode<>(styles), state, startIndex, endIndex);
             }
         };
