@@ -15,7 +15,12 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
       - name: Deploy to Nexus with Gradle
-        run: ./gradlew publish
+        run: |
+          echo "GPG_SIGNING_KEY=$SONATYPE_KEY" > gradle.properties
+          echo "GPG_SIGNING_PASSWORD=$SONATYPE_KEY_PASS" >> gradle.properties
+          ./gradlew publish
         env:
-          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
-          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          SONATYPE_KEY: ${{ secrets.SONATYPE_KEY }}
+          SONATYPE_KEY_PASS: ${{ secrets.SONATYPE_KEY_PASS }}
