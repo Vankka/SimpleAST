@@ -46,9 +46,9 @@ task publishProject {
     signing {
         sign configurations.archives
 
-        def key = System.getenv('GPG_SIGNING_KEY')
+        def key = System.getenv('SONATYPE_KEY')
         if (key != null) {
-            useInMemoryPgpKeys(key, System.getenv('GPG_SIGNING_PASSWORD'))
+            useInMemoryPgpKeys(key, System.getenv('SONATYPE_KEY_PASS'))
         }
     }
 
@@ -88,8 +88,8 @@ task publishProject {
         repositories {
             maven {
                 credentials {
-                    username ossrhUsername
-                    password ossrhPassword
+                    username findProperty('ossrhUsername')
+                    password findProperty('ossrhPassword')
                 }
                 url version.endsWith('-SNAPSHOT') ? 'https://s01.oss.sonatype.org/content/repositories/snapshots/' : 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
             }
