@@ -18,7 +18,9 @@ jobs:
         run: |
           echo "GPG_SIGNING_KEY=$SONATYPE_KEY" > gradle.properties
           echo "GPG_SIGNING_PASSWORD=$SONATYPE_KEY_PASS" >> gradle.properties
-          ./gradlew publish
+          echo "ossrhUsername=$SONATYPE_USERNAME" >> gradle.properties
+          echo "ossrhPassword=$SONATYPE_PASSWORD" >> gradle.properties
+          ./gradlew publishProject
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
