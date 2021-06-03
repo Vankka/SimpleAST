@@ -5,7 +5,7 @@ plugins {
 
 group = 'dev.vankka'
 archivesBaseName = 'SimpleAST'
-version = '2.2.7-SNAPSHOT'
+version = '2.2.8-SNAPSHOT'
 
 repositories {
     mavenCentral()
