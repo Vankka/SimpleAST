@@ -1,7 +1,5 @@
 plugins {
     id 'java'
-    id 'signing'
-    id 'maven-publish'
     id 'io.franzbecker.gradle-lombok' version '4.0.0'
 }
 
@@ -9,12 +7,12 @@ group = 'dev.vankka'
 archivesBaseName = 'SimpleAST'
 version = '2.2.7-SNAPSHOT'
 
-dependencies {
-    testImplementation 'junit:junit:4.12'
-}
-
 repositories {
     mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.12'
 }
 
 javadoc {
@@ -26,62 +24,65 @@ javadoc {
     failOnError = false
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    archiveClassifier = 'javadoc'
-    from javadoc.destinationDir
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
 }
 
-artifacts {
-    archives sourcesJar, javadocJar
+if (System.getenv('SONATYPE_KEY') == null && !project.hasProperty("signing.keyId")) {
+    // Don't even bother with signing/publishing if neither of these are set
+    return
 }
 
 task publishProject {
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
     dependsOn tasks.build
-
-    signing {
-        sign configurations.archives
-
-        def key = System.getenv('SONATYPE_KEY')
-        if (key != null) {
-            useInMemoryPgpKeys(key, System.getenv('SONATYPE_KEY_PASS'))
-        }
-    }
 
     publishing {
         publications {
             maven(MavenPublication) {
-                //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                from components.java
 
-            pom {
-                name = project.name
-                packaging = 'jar'
-                description = 'A fork of Discord\'s SimpleAST fully in Java without Android code'
-                url = 'https://github.com/Vankka/SimpleAST'
-
-                scm {
-                    connection = 'scm:git:https://github.com/Vankka/SimpleAST.git'
-                    developerConnection = 'scm:git:https://github.com/Vankka/SimpleAST.git'
+                pom {
+                    name = project.name
+                    packaging = 'jar'
+                    description = 'A fork of Discord\'s SimpleAST fully in Java without Android code'
                     url = 'https://github.com/Vankka/SimpleAST'
-                }
 
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    scm {
+                        connection = 'scm:git:https://github.com/Vankka/SimpleAST.git'
+                        developerConnection = 'scm:git:https://github.com/Vankka/SimpleAST.git'
+                        url = 'https://github.com/Vankka/SimpleAST'
                     }
-                }
 
-                developers {
-                    developer {
-                        id = 'Vankka'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'Vankka'
+                        }
                     }
                 }
             }
+        }
+
+        signing {
+            sign publishing.publications.maven
+
+            def key = System.getenv('SONATYPE_KEY')
+            if (key != null) {
+                useInMemoryPgpKeys(key, System.getenv('SONATYPE_KEY_PASS'))
             }
         }
 
@@ -95,5 +96,6 @@ task publishProject {
             }
         }
     }
+
     finalizedBy publish
 }
